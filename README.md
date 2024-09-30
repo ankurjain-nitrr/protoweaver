@@ -9,25 +9,32 @@ ProtoWeaver is a versatile CLI tool designed to streamline the development workf
 - **Dependency Handling**: Automatically resolve and manage dependencies between different domains.
 - **Linting**: Ensure your .proto files adhere to best practices with built-in linting capabilities.
 - **Flexible Configuration**: Customize your build process with a simple YAML configuration file.
+- **gRPC Integration**: Seamless support for gRPC code generation across all supported languages.
 
-## Installation
 
 To install ProtoWeaver, follow these steps:
 
 1. Ensure you have Go 1.16 or later installed on your system.
-2. Clone the ProtoWeaver repository:
+2. Run the following command to install ProtoWeaver:
+   ```
+   go install github.com/yourusername/protoweaver@latest
+   ```
+
+Alternatively, you can build from source:
+
+1. Clone the ProtoWeaver repository:
    ```
    git clone https://github.com/yourusername/protoweaver.git
    ```
-3. Navigate to the ProtoWeaver directory:
+2. Navigate to the ProtoWeaver directory:
    ```
    cd protoweaver
    ```
-4. Build the ProtoWeaver binary:
+3. Build the ProtoWeaver binary:
    ```
    go build -o protoweaver
    ```
-5. (Optional) Move the binary to a directory in your PATH for easy access:
+4. (Optional) Move the binary to a directory in your PATH for easy access:
    ```
    sudo mv protoweaver /usr/local/bin/
    ```
@@ -40,7 +47,6 @@ To install ProtoWeaver, follow these steps:
 # Global settings
 gen_dir: "./gen"  # Base directory for generated code
 proto_dir: "./proto"  # Directory containing .proto files
-buf_enabled: true  # Whether to use buf for proto management (optional)
 
 # List of domains in your project
 domains:
@@ -53,10 +59,8 @@ languages:
   java:
     enabled: true  # Whether to generate Java code
     version: "11"  # Java version to target
-    output_dir: "${gen_dir}/java"  # Output directory for Java code
-    options:
-      grpc: true  # Whether to generate gRPC code
-      lite: false  # Whether to use protobuf-lite
+    output_dir: "${gen_dir}/java
+    package: "com.yourorg.yourproject"
 
   go:
     enabled: true
@@ -67,17 +71,13 @@ languages:
 
   python:
     enabled: false
-    output_dir: "${gen_dir}/python"
-    options:
-      grpc: false
-      mypy_enabled: true  # Whether to generate mypy stubs
+    output_dir: "${gen_dir}/python/
 
   # Add more languages as needed
   # typescript:
   #   enabled: false
   #   output_dir: "${gen_dir}/ts"
-  #   options:
-  #     grpc-web: true
+
 
 # Linting options
 lint:
@@ -86,12 +86,27 @@ lint:
     - ENUM_NAMES_UPPER_SNAKE_CASE
     - FIELD_NAMES_LOWER_SNAKE_CASE
     - SERVICE_NAMES_UPPER_CAMEL_CASE
-
-# Compilation options (if applicable)
-compile:
-  java:
-    enabled: true
-    target_dir: "${gen_dir}/java/classes"
 ```
 
+Save this configuration as `protoweaver.yaml` in your project root directory.
+
+## Usage
+
+To use ProtoWeaver, run the following command in your project directory:
+
+```
+protoweaver generate
+```
+
+This will generate code for all enabled languages based on your .proto files and configuration.
+
+For more options and commands, run:
+
+```
+protoweaver --help
+```
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
 
